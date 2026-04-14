@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Артлайф - KASSIR.RU</title>
+<!-- шрифт -->
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth }
+  body {
+    font-family: 'Onest', -apple-system, sans-serif;
+    background: #fff;
+    color: #1A1A1A;
+    /* overflow-x: hidden; */
+  }
+  a { text-decoration: none; color: inherit }
+
+  /* шапка */
+  .header {
+    background: #fff;
+    border-bottom: 1px solid #E8E8E8;
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+  .header .logo { display: flex; align-items: center }
+  .logo-text {
+    font-size: 22px;
+    font-weight: 900;
+    color: #2D2D2D;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .logo-icon { display: inline-block; width: 32px; height: 32px; margin: 0 1px }
+  .header nav { display: flex; gap: 20px; font-size: 13px }
+  .header nav a { color: #999 }
+  .header nav a.active { color: #1A1A1A; font-weight: 600 }
+
+  .catbar {
+    background: #FFCC00;
+    padding: 11px 40px;
+    display: flex;
+    gap: 28px;
+  }
+  .catbar a {
+    font-size: 13px; font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #1A1A1A;
+  }
+
+  /*
+   * hero организатора
+   * фон - блюрится картинка + градиент сверху
+   */
+  .org-hero {
+    position: relative;
+    padding: 48px 40px 44px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    overflow: hidden;
+  }
+  .org-hero .bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .org-hero .bg img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: blur(4px) brightness(.45);
+    transform: scale(1.1);
+  }
+  .org-hero .bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,.55), rgba(0,0,0,.25) 50%, rgba(0,0,0,.45));
+  }
+
+  .ava-wrap {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+  .ava-wrap .ava {
+    width: 100px; height: 100px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,.3);
+    border: 3px solid rgba(255,255,255,.2);
+  }
+  .ava-wrap .ava img { width: 100%; height: 100%; object-fit: cover }
+
+  /* плашка рейтинга под аватаркой */
+  .ava-rating {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #FFCC00;
+    color: #1a1a1a;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    display: flex; align-items: center; gap: 3px;
+    white-space: nowrap;
+    transition: transform .15s;
+  }
+  .ava-rating:hover {
+    transform: translateX(-50%) scale(1.08);
+  }
+  .ava-rating .star { font-size: 11px }
+
+  .hero-info {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-info .name-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 6px;
+  }
+  .hero-info h1 { font-size: 28px; font-weight: 900; color: #fff }
+  .verified {
+    background: #FFCC00; color: #1A1A1A;
+    font-size: 10px; font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .hero-info .stats {
+    display: flex; gap: 24px;
+    font-size: 14px;
+    color: rgba(255,255,255,.7);
+  }
+  .hero-info .stats strong { color: #fff; font-weight: 700 }
+
+  /* быстрые ссылки в хиро */
+  .quick-nav {
+    display: flex; gap: 12px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .quick-nav a {
+    font-size: 12px; font-weight: 600;
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(255,255,255,.35);
+    background: rgba(255,255,255,.12);
+    transition: all .2s;
+    backdrop-filter: blur(4px);
+  }
+  .quick-nav a:hover {
+    background: rgba(255,204,0,.2);
+    border-color: #fc0;
+    color: #fc0;
+  }
+
+  .hero-actions {
+    flex-shrink: 0;
+    display: flex; flex-direction: column;
+    align-items: flex-end; gap: 6px;
+    position: relative; z-index: 1;
+  }
+  .btn-follow {
+    background: #FFCC00; color: #1A1A1A; border: none;
+    padding: 12px 32px; border-radius: 8px;
+    font-size: 14px; font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-follow:hover { background: #E5B800 }
+  .btn-follow.subscribed {
+    background: rgba(255,255,255,.15);
+    border: 1.5px solid rgba(255,255,255,.5);
+    color: #fff;
+  }
+  .follow-hint { font-size: 11px; color: rgba(255,255,255,.5) }
+
+  /* счетчик подписчиков */
+  .followers {
+    font-size: 12px;
+    color: rgba(255,255,255,.5);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .followers .dots { display: flex }
+  .followers .dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.2);
+    background: #555;
+    overflow: hidden;
+    margin-left: -6px;
+  }
+  .followers .dot:first-child { margin-left: 0 }
+  .followers .dot img { width: 100%; height: 100%; object-fit: cover }
+
+  /* попап подписки */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 9999;
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.active { display: flex }
+
+  .modal {
+    background: #fff;
+    border-radius: 20px;
+    padding: 36px 32px 28px;
+    width: 400px; max-width: 90vw;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    animation: modalIn .25s ease;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(.9) translateY(20px) }
+    to { opacity: 1; transform: none }
+  }
+  .modal .close-btn {
+    position: absolute; top: 14px; right: 16px;
+    background: 0; border: 0;
+    font-size: 22px; color: #bbb;
+    cursor: pointer;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .15s;
+  }
+  .modal .close-btn:hover { background: #f0f0f0; color: #666 }
+  .modal .ico-wrap {
+    width: 56px; height: 56px; border-radius: 14px;
+    background: #FFF8E1;
+    margin: 0 auto 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+  }
+  .modal h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px }
+  .modal p { font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 20px }
+  .modal .checks { text-align: left; margin-bottom: 24px }
+  .modal .check-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px; color: #444;
+    margin-bottom: 10px; line-height: 1.4;
+  }
+  .modal .check-item .ci {
+    flex-shrink: 0;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: #E8F5E9; color: #4CAF50;
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal .confirm-btn {
+    width: 100%; padding: 14px; border: 0; border-radius: 12px;
+    background: #FFCC00; color: #1A1A1A;
+    font-size: 15px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+  }
+  .modal .confirm-btn:hover { background: #E5B800 }
+  .modal .skip {
+    display: inline-block; margin-top: 12px;
+    font-size: 13px; color: #999;
+    cursor: pointer;
+    border: 0; background: 0;
+    font-family: inherit;
+  }
+  .modal .skip:hover { color: #666 }
+
+
+  /* === общие секции === */
+  .sec { padding: 32px 40px }
+  .sec + .sec { padding-top: 0 }
+  .sec.bg-gray { background: #F5F5F5; padding-top: 32px; padding-bottom: 36px }
+
+  /* блок "О компании" — отделяем от соседей */
+  .sec.about-block {
+    background: #F5F5F5;
+    padding-top: 40px;
+    padding-bottom: 44px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .sec-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 18px;
+  }
+  .sec-head h2 {
+    font-size: 22px; font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+  }
+  .sec-head .more {
+    font-size: 14px; color: #999; font-weight: 500;
+    cursor: pointer;
+  }
+  .sec-head .more:hover { color: #1A1A1A }
+
+  /* города */
+  .city-list { display: flex; gap: 10px; flex-wrap: wrap }
+  .city-btn {
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 14px; font-weight: 600;
+    background: #fff;
+    border: 1px solid #E0E0E0;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: inherit;
+  }
+  .city-btn:hover { background: #F5F5F5 }
+  .city-btn.active { background: #FFCC00; border-color: #FFCC00 }
+  .city-btn .cnt {
+    font-size: 11px; font-weight: 500; color: #999;
+    margin-left: 4px;
+  }
+  .city-btn.active .cnt { color: #666 }
+
+  /* скролл лента */
+  .scroll-row {
+    display: flex; gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
+    -ms-overflow-style: none; scrollbar-width: none;
+  }
+  .scroll-row::-webkit-scrollbar { display: none }
+
+  /* карточка события */
+  .ev-card {
+    flex: 0 0 220px;
+    scroll-snap-align: start;
+    background: #fff; border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid #eee;
+    transition: box-shadow .15s;
+  }
+  .ev-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08) }
+  .ev-card .poster {
+    height: 260px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ev-card .poster img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .ev-card .badge-age {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(0,0,0,.55); color: #fff;
+    font-size: 11px; font-weight: 600;
+    padding: 3px 7px; border-radius: 6px;
+    z-index: 2;
+  }
+  .ev-card .badge-rating {
+    position: absolute; top: 12px; left: 50px;
+    background: #FFCC00; color: #1A1A1A;
+    font-size: 11px; font-weight: 700;
+    padding: 3px 7px; border-radius: 6px;
+    z-index: 2;
+  }
+  .ev-card .prices {
+    position: absolute; bottom: 12px; left: 12px;
+    display: flex; gap: 6px; align-items: center;
+    z-index: 2;
+  }
+  .ev-card .price {
+    background: rgba(0,0,0,.6); color: #fff;
+    font-size: 12px; font-weight: 600;
+    padding: 4px 10px; border-radius: 6px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .ev-card .price .r { color: #FFCC00; font-weight: 700 }
+  .ev-card .discount {
+    background: #4CAF50; color: #fff;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 8px; border-radius: 6px;
+  }
+  .ev-card .info { padding: 12px 14px 14px }
+  .ev-card .info .title {
+    font-size: 14px; font-weight: 700;
+    margin-bottom: 8px; line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .ev-card .info .date { font-size: 12px; color: #888; margin-bottom: 2px }
+  .ev-card .info .venue { font-size: 12px; color: #aaa }
+  .ev-card .info .city-label {
+    font-size: 10px; font-weight: 600;
+    color: #E65100;
+    background: #FFF3E0;
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+
+  .ev-card.lg { flex: 0 0 260px }
+  .ev-card.lg .poster { height: 320px }
+
+  /* артисты — карточки с фоном */
+  .artists-row { display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px }
+  .artists-row::-webkit-scrollbar { display: none }
+  .artist {
+    flex: 0 0 200px;
+    height: 240px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .artist img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform .3s;
+  }
+  .artist:hover img { transform: scale(1.05) }
+  .artist::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(transparent 40%, rgba(0,0,0,.75));
+  }
+  .artist .a-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 16px; z-index: 2; color: #fff;
+  }
+  .artist .nm { font-size: 16px; font-weight: 700; margin-bottom: 2px }
+  .artist .genre { font-size: 12px; color: rgba(255,255,255,.7) }
+  .artist .a-events {
+    display: inline-block; margin-top: 8px;
+    font-size: 11px; font-weight: 600;
+    background: rgba(255,255,255,.15);
+    backdrop-filter: blur(4px);
+    padding: 4px 10px; border-radius: 6px;
+    color: rgba(255,255,255,.9);
+  }
+
+  /* туры */
+  .tours-row { display:flex; gap:16px; overflow-x:auto; scrollbar-width:none; padding-bottom:6px }
+  .tours-row::-webkit-scrollbar { display:none }
+  .tour-card {
+    flex: 0 0 320px;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #eee;
+    cursor: pointer;
+    display: flex;
+  }
+  .tour-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.08) }
+  .tour-card .poster { width:130px; flex-shrink:0; overflow:hidden }
+  .tour-card .poster img { width:100%; height:100%; object-fit:cover; display:block }
+  .tour-card .body { padding:16px; flex:1; display:flex; flex-direction:column; justify-content:center }
+  .tour-card .body h3 { font-size:16px; font-weight:800; margin-bottom:4px; line-height:1.2 }
+  .tour-card .tag {
+    display:inline-block;
+    font-size:10px; font-weight:700; text-transform:uppercase;
+    letter-spacing:.5px;
+    background:#FFF3E0; color:#E65100;
+    padding:3px 8px; border-radius:4px;
+    margin-bottom:10px; width:fit-content;
+  }
+  .tour-card ul { list-style:none; padding:0 }
+  .tour-card li {
+    font-size:12px; color:#666; padding:3px 0;
+    display:flex; justify-content:space-between; gap:12px;
+    border-bottom:1px solid #f5f5f5;
+  }
+  .tour-card li:last-child { border-bottom:0 }
+  .tour-card .city { font-weight:600; color:#1a1a1a }
+  .tour-card .dt { color:#999; white-space:nowrap }
+
+  /* расхлоп тура */
+  .tour-detail {
+    display:none;
+    margin-top:20px;
+    background:#111;
+    border-radius:20px;
+    overflow:hidden;
+    color:#fff;
+    /* border: 1px solid #333; — слишком видно, убрал */
+  }
+  .tour-detail.open { display:flex }
+  .tour-detail .photo {
+    width:380px; flex-shrink:0;
+    overflow:hidden;
+    border-radius:20px 0 0 20px;
+  }
+  .tour-detail .photo img { width:100%; height:100%; object-fit:cover; display:block }
+  .tour-detail .content {
+    flex:1; padding:32px 36px;
+    position:relative;
+    max-height:420px;
+    overflow-y:auto;
+  }
+  .tour-detail .x-btn {
+    position:absolute; top:16px; right:16px;
+    width:36px; height:36px; border-radius:50%;
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.15);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:18px; color:#aaa;
+    z-index:2;
+  }
+  .tour-detail .x-btn:hover { background:rgba(255,255,255,.2); color:#fff }
+  .tour-detail h2 {
+    font-size:26px; font-weight:900;
+    margin-bottom:4px; line-height:1.2;
+    padding-right:48px; /* не налезает на крестик */
+  }
+  .tour-detail .subtitle {
+    font-size:13px; color:#fc0;
+    font-weight:600; letter-spacing:.5px;
+    margin-bottom:24px;
+  }
+  .tour-detail .dates { list-style:none; padding:0 }
+  .tour-detail .dates li {
+    display:flex; align-items:center;
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    gap:16px;
+  }
+  .tour-detail .dates li:last-child { border-bottom:0 }
+  .tour-detail .d-num { text-align:center; min-width:44px; flex-shrink:0 }
+  .tour-detail .d-num b { font-size:22px; font-weight:800; display:block; line-height:1 }
+  .tour-detail .d-num small {
+    font-size:11px; color:rgba(255,255,255,.5);
+    text-transform:uppercase; font-weight:600;
+  }
+  .tour-detail .d-info { flex:1 }
+  .tour-detail .d-info .city {
+    font-size:13px; font-weight:700;
+    text-transform:uppercase; letter-spacing:.3px;
+  }
+  .tour-detail .d-info .place { font-size:12px; color:rgba(255,255,255,.45); margin-top:2px }
+  .tour-detail .buy-btn {
+    background:0; border:1.5px solid rgba(255,255,255,.25);
+    color:#fff; font-size:11px; font-weight:700;
+    text-transform:uppercase; letter-spacing:.5px;
+    padding:8px 18px; border-radius:6px;
+    cursor:pointer; font-family:inherit;
+    flex-shrink:0;
+  }
+  .tour-detail .buy-btn:hover { background:#fc0; color:#1a1a1a; border-color:#fc0 }
+
+  /* медиа мозаика */
+  .media-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 190px 190px;
+    gap: 10px;
+  }
+  .m-card {
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .m-card img { width: 100%; height: 100%; object-fit: cover; display: block }
+  .m-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(transparent 40%, rgba(0,0,0,.65));
+  }
+  .m-card:hover::after {
+    background: linear-gradient(transparent 30%, rgba(0,0,0,.75));
+  }
+  .m-card.tall { grid-row: span 2 }
+  .m-card .caption {
+    position: absolute; bottom: 16px; left: 16px; right: 16px;
+    z-index: 2; color: #fff;
+  }
+  .m-card .tag {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+    display: inline-block; padding: 3px 8px;
+    border-radius: 4px; margin-bottom: 6px;
+  }
+  .m-card .tag.t-news { background: #E53935 }
+  .m-card .tag.t-anons { background: #1E88E5 }
+  .m-card .tag.t-press { background: #7B1FA2 }
+  .m-card .tag.t-back { background: #F57C00 }
+  .m-card .caption h3 { font-size: 15px; font-weight: 700; line-height: 1.3 }
+  .m-card.tall .caption h3 { font-size: 18px }
+
+  /* команда */
+  .team { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px }
+  .team .person {
+    text-align: center; cursor: pointer; width: 90px;
+  }
+  .team .person .pic {
+    width: 72px; height: 72px; border-radius: 50%;
+    margin: 0 auto 8px;
+    overflow: hidden;
+    border: 3px solid transparent;
+    transition: border-color .2s;
+  }
+  .team .person .pic img { width: 100%; height: 100%; object-fit: cover }
+  .team .person.active .pic { border-color: #FFCC00 }
+  .team .person .nm { font-size: 12px; font-weight: 600; line-height: 1.2 }
+  .team .person .rl { font-size: 11px; color: #999 }
+
+  /* карточка-раскрывашка */
+  .team-detail {
+    display: none;
+    margin-top: 20px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+  }
+  .team-detail.open { display: flex }
+  .team-detail .td-photo {
+    width: 340px; flex-shrink: 0;
+    position: relative; overflow: hidden;
+    background: #ddd;
+  }
+  .team-detail .td-photo img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    min-height: 280px;
+  }
+  /* красные полоски как на макете */
+  .team-detail .td-photo::before,
+  .team-detail .td-photo::after {
+    content: ''; position: absolute;
+    top: 0; bottom: 0; width: 8px;
+    background: #8B1A1A;
+  }
+  .team-detail .td-photo::before { left: 0 }
+  .team-detail .td-photo::after { right: 0 }
+  .team-detail .td-body {
+    padding: 32px 36px;
+    flex: 1;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative;
+  }
+  .team-detail .td-close {
+    position: absolute; top: 12px; right: 12px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(0,0,0,.06);
+    border: 1px solid rgba(0,0,0,.08);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 18px; color: #888;
+    transition: all .15s;
+  }
+  .team-detail .td-close:hover { background: rgba(0,0,0,.1); color: #333 }
+  .team-detail blockquote {
+    font-size: 15px; line-height: 1.7;
+    color: #444; margin-bottom: 24px;
+    font-style: normal; /* не italic */
+    border: 0; padding: 0; /* сброс дефолтного */
+  }
+  .team-detail .td-name { font-size: 22px; font-weight: 800; margin-bottom: 4px }
+  .team-detail .td-role { font-size: 14px; color: #C62828; font-weight: 600 }
+
+  /* отзывы */
+  .rating-summary {
+    display: flex; gap: 24px; align-items: center;
+    margin-bottom: 20px; padding: 20px 24px;
+    background: #fff; border-radius: 12px;
+    border: 1px solid #eee;
+  }
+  .rating-summary .score { text-align: center; min-width: 80px }
+  .rating-summary .big-num { font-size: 40px; font-weight: 800; line-height: 1 }
+  .rating-summary .stars { color: #E5A100; font-size: 14px; letter-spacing: 2px; margin-top: 4px }
+  .rating-summary .total { font-size: 12px; color: #888; margin-top: 4px }
+  .rating-summary .bars { flex: 1; display: flex; flex-direction: column; gap: 4px }
+  .bar-row { display: flex; align-items: center; gap: 8px }
+  .bar-row .lbl { font-size: 12px; color: #888; width: 12px }
+  .bar-row .track { flex: 1; height: 6px; background: #F0F0F0; border-radius: 3px; overflow: hidden }
+  .bar-row .fill { height: 100%; background: #FFCC00; border-radius: 3px }
+  .bar-row .pct { font-size: 11px; color: #bbb; width: 30px }
+
+  .review-card {
+    background: #fff; border-radius: 10px;
+    padding: 16px 20px;
+    border: 1px solid #eee;
+    margin-bottom: 10px;
+  }
+  .review-card .top { display: flex; justify-content: space-between; margin-bottom: 8px }
+  .review-card .user { display: flex; align-items: center; gap: 10px }
+  .review-card .user-ava {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: #F0F0F0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: #888; font-weight: 600;
+  }
+  .review-card .user-name { font-size: 13px; font-weight: 600 }
+  .review-card .event-name { font-size: 11px; color: #bbb; margin-left: 8px }
+  .review-card .meta { display: flex; align-items: center; gap: 8px }
+  .review-card .meta .dt { font-size: 11px; color: #bbb }
+  .review-card .body { font-size: 13px; color: #666; line-height: 1.5 }
+
+  /* похожие */
+  .similar-row { display: flex; gap: 14px; overflow-x: auto; scrollbar-width: none }
+  .similar-row::-webkit-scrollbar { display: none }
+  .sim-card {
+    flex: 0 0 180px; text-align: center;
+    padding: 20px 16px;
+    border-radius: 14px;
+    background: #fff; border: 1px solid #eee;
+    cursor: pointer;
+  }
+  .sim-card:hover { background: #fafafa }
+  .sim-card .pic {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: #eee; margin: 0 auto 10px;
+    overflow: hidden;
+  }
+  .sim-card .pic img { width: 100%; height: 100%; object-fit: cover }
+  .sim-card .nm { font-size: 14px; font-weight: 600; margin-bottom: 4px }
+  .sim-card .cnt { font-size: 12px; color: #999 }
+
+  /* анимация при смене города */
+  .fade-in { animation: fadeUp .3s ease }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px) }
+    to { opacity: 1; transform: none }
+  }
+
+  /* архив событий */
+  .archive-card .poster { position: relative }
+  .archive-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,.75);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    z-index: 5;
+  }
+  .archive-card .archive-stats {
+    font-size: 12px;
+    color: #888;
+    margin-top: 6px;
+  }
+  .archive-card .archive-stats span {
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+
+  /* блок обратной связи */
+  .contact-block {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+  }
+  .contact-intro {
+    flex: 0 0 280px;
+  }
+  .contact-intro p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #666;
+  }
+  .contact-form-wrap {
+    flex: 1;
+    max-width: 560px;
+  }
+  .contact-topics {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .topic-btn {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background: #fff;
+    font-size: 13px;
+    font-family: inherit;
+    color: #666;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .topic-btn:hover {
+    border-color: #bbb;
+    color: #1A1A1A;
+  }
+  .topic-btn.active {
+    background: #FFCC00;
+    border-color: #FFCC00;
+    color: #1A1A1A;
+    font-weight: 600;
+  }
+  .contact-form .form-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .contact-form .form-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    transition: border-color .2s;
+  }
+  .contact-form .form-input:focus {
+    outline: none;
+    border-color: #FFCC00;
+  }
+  .contact-form .form-input::placeholder {
+    color: #aaa;
+  }
+  .form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 100px;
+    margin-bottom: 14px;
+    transition: border-color .2s;
+  }
+  .form-textarea:focus {
+    outline: none;
+    border-color: #FFCC00;
+  }
+  .form-textarea::placeholder {
+    color: #aaa;
+  }
+  .form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #888;
+    cursor: pointer;
+  }
+  .form-checkbox input {
+    width: 16px;
+    height: 16px;
+    accent-color: #FFCC00;
+  }
+  .send-btn {
+    padding: 12px 32px;
+    background: #FFCC00;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1A1A1A;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .15s;
+  }
+  .send-btn:hover {
+    background: #E5B800;
+  }
+  .contact-alt {
+    flex: 0 0 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .contact-method {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #F9F9F9;
+    border-radius: 12px;
+    border: 1px solid #eee;
+  }
+  .cm-icon {
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cm-label {
+    font-size: 11px;
+    color: #999;
+    margin-bottom: 2px;
+  }
+  .cm-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1A1A1A;
+    transition: color .15s;
+  }
+  .cm-value:hover {
+    color: #C62828;
+  }
+
+  /* ===== mobile ===== */
+  @media (max-width: 768px) {
+
+    /* шапка — бургер-стиль */
+    .header {
+      padding: 10px 16px;
+    }
+    .logo-text { font-size: 18px; letter-spacing: 1px }
+    .logo-icon { width: 26px; height: 26px }
+    .header nav { gap: 14px; font-size: 12px }
+
+    /* catbar — горизонтальный скролл */
+    .catbar {
+      padding: 10px 16px;
+      gap: 18px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      flex-wrap: nowrap;
+    }
+    .catbar::-webkit-scrollbar { display: none }
+    .catbar a { flex-shrink: 0; font-size: 12px }
+
+    /* hero — вертикальный, компактный */
+    .org-hero {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 24px 16px 20px;
+      gap: 16px;
+    }
+    .ava-wrap { align-self: center }
+    .ava-wrap .ava { width: 80px; height: 80px; border-radius: 14px }
+    .ava-rating { font-size: 11px; padding: 2px 8px }
+
+    .hero-info { width: 100%; text-align: center }
+    .hero-info .name-row { justify-content: center }
+    .hero-info h1 { font-size: 24px }
+    .hero-info .stats {
+      justify-content: center;
+      gap: 16px;
+      font-size: 13px;
+    }
+    .quick-nav {
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .quick-nav a {
+      font-size: 11px;
+      padding: 4px 10px;
+    }
+    .hero-actions {
+      align-items: center;
+      width: 100%;
+    }
+    .btn-follow {
+      width: 100%;
+      padding: 14px;
+      font-size: 15px;
+      border-radius: 10px;
+    }
+    .follow-hint { text-align: center }
+    .followers { justify-content: center }
+
+    /* секции */
+    .sec { padding: 24px 16px }
+    .sec + .sec { padding-top: 0 }
+    .sec.bg-gray { padding-top: 24px; padding-bottom: 28px }
+
+    .sec-head { margin-bottom: 14px }
+    .sec-head h2 { font-size: 18px }
+
+    /* города — скролл на мобилке */
+    .city-list {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+    }
+    .city-list::-webkit-scrollbar { display: none }
+    .city-btn {
+      flex-shrink: 0;
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+
+    /* карточки событий — поуже */
+    .ev-card {
+      flex: 0 0 160px;
+    }
+    .ev-card .poster { height: 200px }
+    .ev-card .info { padding: 10px 12px 12px }
+    .ev-card .info .title { font-size: 13px; margin-bottom: 6px }
+    .ev-card .info .date { font-size: 11px }
+    .ev-card .info .venue { font-size: 11px }
+    .ev-card .badge-age { font-size: 10px; padding: 2px 6px }
+    .ev-card .badge-rating { font-size: 10px; padding: 2px 6px; left: 44px }
+    .ev-card .price { font-size: 11px; padding: 3px 8px }
+    .ev-card .discount { font-size: 10px; padding: 3px 6px }
+
+    .ev-card.lg { flex: 0 0 200px }
+    .ev-card.lg .poster { height: 260px }
+
+    /* артисты — поуже */
+    .artist { flex: 0 0 160px; height: 200px }
+    .artist .nm { font-size: 14px }
+    .artist .genre { font-size: 10px }
+    .artist .a-events { font-size: 10px; padding: 3px 8px }
+
+    /* туры */
+    .tour-card { flex: 0 0 280px }
+    .tour-card .poster { width: 100px }
+    .tour-card .body { padding: 12px }
+    .tour-card .body h3 { font-size: 14px }
+
+    .tour-detail { flex-direction: column }
+    .tour-detail .photo { width: 100%; height: 200px; border-radius: 20px 20px 0 0 }
+    .tour-detail .content { padding: 20px; max-height: none }
+    .tour-detail h2 { font-size: 20px }
+
+    /* медиа — одна колонка, без большой карточки */
+    .media-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 140px 140px 140px;
+      gap: 8px;
+    }
+    .m-card.tall { grid-row: span 2 }
+    .m-card .caption h3 { font-size: 13px }
+    .m-card.tall .caption h3 { font-size: 15px }
+    .m-card .tag { font-size: 9px; padding: 2px 6px }
+
+    /* команда */
+    .team { gap: 14px; justify-content: center }
+    .team .person { width: 75px }
+    .team .person .pic { width: 60px; height: 60px }
+    .team .person .nm { font-size: 11px }
+    .team .person .rl { font-size: 10px }
+
+    .team-detail { flex-direction: column }
+    .team-detail .td-photo { width: 100%; height: 200px }
+    .team-detail .td-photo img { min-height: 200px; height: 200px }
+    .team-detail .td-body { padding: 20px }
+    .team-detail blockquote { font-size: 14px; line-height: 1.6; margin-bottom: 16px }
+    .team-detail .td-name { font-size: 18px }
+    .team-detail .td-role { font-size: 13px }
+    .team-detail .td-close { top: 8px; right: 8px; width: 28px; height: 28px; font-size: 16px }
+
+    /* отзывы */
+    .rating-summary { flex-direction: column; gap: 16px; padding: 16px }
+    .rating-summary .big-num { font-size: 36px }
+    .rating-summary .bars { width: 100% }
+
+    .review-card { padding: 14px 16px }
+    .review-card .top { flex-direction: column; gap: 6px }
+    .review-card .body { font-size: 13px }
+
+    /* архив на мобилке */
+    .archive-card .archive-stats { font-size: 11px }
+    .archive-badge { font-size: 9px; padding: 3px 8px }
+
+    /* обратная связь на мобилке */
+    .contact-block {
+      flex-direction: column;
+      gap: 24px;
+    }
+    .contact-intro {
+      flex: none;
+    }
+    .contact-form-wrap {
+      max-width: none;
+    }
+    .contact-form .form-row {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .form-footer {
+      flex-direction: column;
+      gap: 12px;
+    }
+    .send-btn {
+      width: 100%;
+    }
+    .contact-alt {
+      flex: none;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .contact-method {
+      flex: 1;
+      min-width: 150px;
+      padding: 12px 14px;
+    }
+    .cm-icon { width: 36px; height: 36px; font-size: 16px }
+    .cm-value { font-size: 12px }
+    .topic-btn { padding: 6px 12px; font-size: 12px }
+
+    /* похожие */
+    .sim-card { flex: 0 0 140px; padding: 16px 12px }
+    .sim-card .pic { width: 52px; height: 52px }
+    .sim-card .nm { font-size: 13px }
+
+    /* попап */
+    .modal { padding: 28px 20px 24px; border-radius: 16px }
+    .modal h3 { font-size: 18px }
+    .modal p { font-size: 13px }
+    .modal .check-item { font-size: 12px }
+    .modal .confirm-btn { font-size: 14px; padding: 12px }
+  }
+
+  /* совсем маленькие экраны (iphone se и тп) */
+  @media (max-width: 374px) {
+    .hero-info h1 { font-size: 20px }
+    .hero-info .stats { flex-wrap: wrap; gap: 8px; font-size: 12px }
+    .quick-nav a { font-size: 10px; padding: 3px 8px }
+    .ev-card { flex: 0 0 140px }
+    .ev-card .poster { height: 180px }
+    .ev-card.lg { flex: 0 0 170px }
+    .ev-card.lg .poster { height: 230px }
+    .media-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(5, 140px);
+    }
+    .m-card.tall { grid-row: span 1 }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <span class="logo-text">KASSIR</span>
+    <span class="logo-icon">😊</span>
+    <span class="logo-text">RU</span>
+  </div>
+  <nav>
+    <a href="#">Новости</a><a href="#">Контакты</a><a href="#">Залы</a><a href="#" class="active">Организаторы</a>
+  </nav>
+</div>
+
+<div class="catbar">
+  <a href="#">Концерт</a><a href="#">Театр</a><a href="#">Спорт</a><a href="#">Фестивали</a><a href="#">Шоу</a><a href="#">Детям</a><a href="#">Стендап</a><a href="#">Ещe ▾</a>
+</div>
+
+<div class="org-hero">
+  <div class="bg">
+    <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=1600&h=400&fit=crop" alt="">
+  </div>
+  <div class="ava-wrap">
+    <div class="ava">
+      <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop" alt="Артлайф">
+    </div>
+  </div>
+  <div class="hero-info">
+    <div class="name-row">
+      <h1>Артлайф</h1>
+      <span class="verified">✓ ПРОВЕРЕННЫЙ</span>
+    </div>
+    <div class="stats">
+      <span><strong>50+</strong> концертов</span>
+      <span><strong>10</strong> спектаклей</span>
+      <span><strong>12</strong> городов</span>
+    </div>
+    <div class="quick-nav">
+      <a href="#sec-cities">Города</a>
+      <a href="#sec-upcoming">Ближайшие события</a>
+      <a href="#sec-best">Лучшие события</a>
+      <a href="#sec-archive">Архив</a>
+      <a href="#sec-artists">Исполнители</a>
+      <a href="#sec-tours">Туры</a>
+      <a href="#sec-media">Медиа</a>
+      <a href="#sec-about">Об Артлайфе</a>
+      <a href="#sec-contact">Связаться</a>
+    </div>
+  </div>
+  <div class="hero-actions">
+    <button class="btn-follow" id="followBtn">Подписаться</button>
+    <span class="follow-hint" id="followHint">Узнавайте первыми о новых событиях</span>
+    <div class="followers" id="followerCount">
+      <div class="dots">
+        <div class="dot"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" alt=""></div>
+        <div class="dot"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop" alt=""></div>
+        <div class="dot"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=40&h=40&fit=crop" alt=""></div>
+      </div>
+      <span class="txt">12 840 следят за организатором</span>
+    </div>
+  </div>
+</div>
+
+<!-- попап подписки -->
+<div class="modal-overlay" id="subModal">
+  <div class="modal">
+    <button class="close-btn" id="modalClose">✕</button>
+    <div class="ico-wrap">🔔</div>
+    <h3>Уведомления от Артлайф</h3>
+    <p>Подпишитесь, чтобы первыми узнавать о новых событиях и специальных предложениях</p>
+    <div class="checks">
+      <div class="check-item"><span class="ci">✓</span> Новые события и старты продаж билетов</div>
+      <div class="check-item"><span class="ci">✓</span> Скидки и промокоды до −30%</div>
+      <div class="check-item"><span class="ci">✓</span> Эксклюзивные предпродажи для подписчиков</div>
+    </div>
+    <button class="confirm-btn" id="modalConfirm">Подписаться на уведомления</button>
+    <button class="skip" id="modalSkip">Не сейчас</button>
+  </div>
+</div>
+
+<!-- города -->
+<div class="sec" id="sec-cities" style="padding-bottom:16px">
+  <div class="sec-head"><h2>Города</h2></div>
+  <div class="city-list" id="cityList">
+    <button class="city-btn" data-city="moscow">Москва <span class="cnt">24</span></button>
+    <button class="city-btn" data-city="spb">Санкт-Петербург <span class="cnt">18</span></button>
+    <button class="city-btn" data-city="kazan">Казань <span class="cnt">9</span></button>
+    <button class="city-btn" data-city="sochi">Сочи <span class="cnt">6</span></button>
+    <button class="city-btn" data-city="novosibirsk">Новосибирск <span class="cnt">5</span></button>
+    <button class="city-btn" data-city="ekb">Екатеринбург <span class="cnt">7</span></button>
+  </div>
+</div>
+
+<div class="sec" id="sec-upcoming">
+  <div class="sec-head">
+    <h2>Ближайшие события</h2>
+    <span class="more">Все события ›</span>
+  </div>
+  <div class="scroll-row" id="upcomingRow"></div>
+</div>
+
+<div class="sec" id="sec-best">
+  <div class="sec-head">
+    <h2>Лучшие события</h2>
+    <span class="more">Все ›</span>
+  </div>
+  <div class="scroll-row" id="bestRow"></div>
+</div>
+
+<!-- архив событий — не зависит от города -->
+<div class="sec" id="sec-archive">
+  <div class="sec-head">
+    <h2>Архив событий</h2>
+    <span class="more">Все прошедшие ›</span>
+  </div>
+  <div class="scroll-row archive-row" id="archiveRow">
+    <div class="ev-card archive-card">
+      <div class="poster">
+        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=500&h=600&fit=crop" alt="">
+        <div class="badge-age">16+</div>
+        <div class="archive-badge">Прошло</div>
+      </div>
+      <div class="info">
+        <div class="title">Muse: Will of the People</div>
+        <div class="date">18 марта 2026 • Москва</div>
+        <div class="venue">ВТБ Арена</div>
+        <div class="archive-stats"><span>12 400</span> зрителей</div>
+      </div>
+    </div>
+    <div class="ev-card archive-card">
+      <div class="poster">
+        <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=500&h=600&fit=crop" alt="">
+        <div class="badge-age">18+</div>
+        <div class="archive-badge">Прошло</div>
+      </div>
+      <div class="info">
+        <div class="title">Noize MC: Всё сразу</div>
+        <div class="date">2 марта 2026 • Санкт-Петербург</div>
+        <div class="venue">Ледовый дворец</div>
+        <div class="archive-stats"><span>8 700</span> зрителей</div>
+      </div>
+    </div>
+    <div class="ev-card archive-card">
+      <div class="poster">
+        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&h=600&fit=crop" alt="">
+        <div class="badge-age">12+</div>
+        <div class="archive-badge">Прошло</div>
+      </div>
+      <div class="info">
+        <div class="title">Imagine Dragons</div>
+        <div class="date">15 февраля 2026 • Москва</div>
+        <div class="venue">Лужники</div>
+        <div class="archive-stats"><span>45 000</span> зрителей</div>
+      </div>
+    </div>
+    <div class="ev-card archive-card">
+      <div class="poster">
+        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&h=600&fit=crop" alt="">
+        <div class="badge-age">18+</div>
+        <div class="archive-badge">Прошло</div>
+      </div>
+      <div class="info">
+        <div class="title">Oxxxymiron: Красота и уродство</div>
+        <div class="date">28 января 2026 • Казань</div>
+        <div class="venue">Татнефть Арена</div>
+        <div class="archive-stats"><span>7 200</span> зрителей</div>
+      </div>
+    </div>
+    <div class="ev-card archive-card">
+      <div class="poster">
+        <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=500&h=600&fit=crop" alt="">
+        <div class="badge-age">6+</div>
+        <div class="archive-badge">Прошло</div>
+      </div>
+      <div class="info">
+        <div class="title">Новогодняя симфония</div>
+        <div class="date">31 декабря 2025 • Москва</div>
+        <div class="venue">Крокус Сити Холл</div>
+        <div class="archive-stats"><span>4 800</span> зрителей</div>
+      </div>
+    </div>
+    <div class="ev-card archive-card">
+      <div class="poster">
+        <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=500&h=600&fit=crop" alt="">
+        <div class="badge-age">16+</div>
+        <div class="archive-badge">Прошло</div>
+      </div>
+      <div class="info">
+        <div class="title">Фестиваль ATLAS Winter</div>
+        <div class="date">20 декабря 2025 • Москва</div>
+        <div class="venue">ВК Стадиум</div>
+        <div class="archive-stats"><span>18 000</span> зрителей</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec" id="sec-artists">
+  <div class="sec-head"><h2>Исполнители</h2></div>
+  <div class="artists-row" id="artistsRow"></div>
+</div>
+
+<!-- туры — кросс-городские -->
+<div class="sec" id="sec-tours">
+  <div class="sec-head">
+    <h2>Туры</h2>
+    <span class="more">Все туры ›</span>
+  </div>
+  <div class="tours-row" id="toursRow">
+    <div class="tour-card" data-tour="0">
+      <div class="poster"><img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=300&h=400&fit=crop" alt=""></div>
+      <div class="body">
+        <div class="tag">Тур 2026</div>
+        <h3>Земфира. Бордерлайн тур</h3>
+        <ul class="stops">
+          <li><span class="city">Москва</span><span class="dt">15 апреля</span></li>
+          <li><span class="city">Санкт-Петербург</span><span class="dt">18 апреля</span></li>
+          <li><span class="city">Казань</span><span class="dt">22 апреля</span></li>
+          <li><span class="city">Екатеринбург</span><span class="dt">25 апреля</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tour-card" data-tour="1">
+      <div class="poster"><img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=300&h=400&fit=crop" alt=""></div>
+      <div class="body">
+        <div class="tag">Юбилейный тур</div>
+        <h3>Каста. 25 лет на сцене</h3>
+        <ul class="stops">
+          <li><span class="city">Москва</span><span class="dt">3 мая</span></li>
+          <li><span class="city">Санкт-Петербург</span><span class="dt">6 мая</span></li>
+          <li><span class="city">Новосибирск</span><span class="dt">10 мая</span></li>
+          <li><span class="city">Сочи</span><span class="dt">15 мая</span></li>
+          <li><span class="city">Екатеринбург</span><span class="dt">19 мая</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tour-card" data-tour="2">
+      <div class="poster"><img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=300&h=400&fit=crop" alt=""></div>
+      <div class="body">
+        <div class="tag">Летний тур</div>
+        <h3>Мот. Новый альбом</h3>
+        <ul class="stops">
+          <li><span class="city">Москва</span><span class="dt">8 июня</span></li>
+          <li><span class="city">Казань</span><span class="dt">12 июня</span></li>
+          <li><span class="city">Сочи</span><span class="dt">18 июня</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tour-card" data-tour="3">
+      <div class="poster"><img src="https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=300&h=400&fit=crop" alt=""></div>
+      <div class="body">
+        <div class="tag">Классика</div>
+        <h3>Симфония при свечах</h3>
+        <ul class="stops">
+          <li><span class="city">Москва</span><span class="dt">1 июня</span></li>
+          <li><span class="city">Санкт-Петербург</span><span class="dt">5 июня</span></li>
+          <li><span class="city">Екатеринбург</span><span class="dt">10 июня</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- раскрывашка тура -->
+  <div class="tour-detail" id="tourDetail">
+    <div class="photo" id="tdPhoto"></div>
+    <div class="content">
+      <div class="x-btn" id="tdX">✕</div>
+      <h2 id="tdTitle"></h2>
+      <div class="subtitle" id="tdSub"></div>
+      <ul class="dates" id="tdDates"></ul>
+    </div>
+  </div>
+</div>
+
+<!-- медиа -->
+<div class="sec" id="sec-media">
+  <div class="sec-head"><h2>Медиа</h2></div>
+  <div class="media-grid">
+    <div class="m-card tall">
+      <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800&h=800&fit=crop" alt="">
+      <div class="caption">
+        <div class="tag t-news">Новости</div>
+        <h3>Артлайф запускает весенний сезон: 12 городов, 30 шоу</h3>
+      </div>
+    </div>
+    <div class="m-card">
+      <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&h=400&fit=crop" alt="">
+      <div class="caption">
+        <div class="tag t-anons">Анонсы</div>
+        <h3>Летний фестиваль ATLAS: объявлен лайнап</h3>
+      </div>
+    </div>
+    <div class="m-card">
+      <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=400&h=400&fit=crop" alt="">
+      <div class="caption">
+        <div class="tag t-press">Пресс-релизы</div>
+        <h3>Артлайф и VK Stadium: новое партнёрство</h3>
+      </div>
+    </div>
+    <div class="m-card">
+      <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=400&fit=crop" alt="">
+      <div class="caption">
+        <div class="tag t-back">Backstage</div>
+        <h3>Как устроен концерт изнутри: 48 часов до шоу</h3>
+      </div>
+    </div>
+    <div class="m-card">
+      <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=400&h=400&fit=crop" alt="">
+      <div class="caption">
+        <div class="tag t-back">Backstage</div>
+        <h3>Звукорежиссёры Артлайфа: невидимые герои сцены</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- об артлайфе -->
+<div class="sec about-block" id="sec-about">
+  <div class="sec-head"><h2>Об Артлайфе</h2></div>
+  <p style="font-size:14px;line-height:1.7;color:#666;max-width:680px;margin-bottom:6px">Артлайф — один из крупнейших концертных промоутеров России. С 2019 года мы организуем концерты, фестивали и шоу для аудитории от 500 до 80 000 человек.</p>
+  <p style="font-size:14px;line-height:1.7;color:#666;max-width:680px;margin-bottom:20px">Наша миссия — делать живую музыку доступной и качественной. За 7 лет провели 186 мероприятий, через которые прошло больше 1.2 миллиона зрителей.</p>
+
+  <div class="team" id="teamCircles">
+    <div class="person" data-i="0">
+      <div class="pic"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=160&h=160&fit=crop" alt=""></div>
+      <div class="nm">Андрей Матвеев</div>
+      <div class="rl">Основатель</div>
+    </div>
+    <div class="person" data-i="1">
+      <div class="pic"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&h=160&fit=crop" alt=""></div>
+      <div class="nm">Елена Козлова</div>
+      <div class="rl">Продюсер</div>
+    </div>
+    <div class="person" data-i="2">
+      <div class="pic"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop" alt=""></div>
+      <div class="nm">Дмитрий Волков</div>
+      <div class="rl">Арт-директор</div>
+    </div>
+    <div class="person" data-i="3">
+      <div class="pic"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&h=160&fit=crop" alt=""></div>
+      <div class="nm">Ольга Смирнова</div>
+      <div class="rl">PR-директор</div>
+    </div>
+  </div>
+
+  <div class="team-detail" id="teamDetail">
+    <div class="td-photo"><img src="" id="tdImg" alt=""></div>
+    <div class="td-body">
+      <button class="td-close" id="tdClose" title="Закрыть">✕</button>
+      <blockquote id="tdQuote"></blockquote>
+      <div class="td-name" id="tdName"></div>
+      <div class="td-role" id="tdRole"></div>
+    </div>
+  </div>
+</div>
+
+<!-- обратная связь с организатором -->
+<div class="sec" id="sec-contact" style="padding-top:40px; padding-bottom:60px">
+  <div class="sec-head"><h2>Связаться с организатором</h2></div>
+  <div class="contact-block">
+    <div class="contact-intro">
+      <p>Есть вопросы по мероприятиям, хотите организовать корпоратив или у вас идея для сотрудничества? Напишите нам — ответим в течение рабочего дня.</p>
+    </div>
+    <div class="contact-form-wrap">
+      <div class="contact-topics" id="topicTabs">
+        <button class="topic-btn active" data-topic="question">Вопрос по событию</button>
+        <button class="topic-btn" data-topic="collab">Сотрудничество</button>
+        <button class="topic-btn" data-topic="press">Для СМИ</button>
+      </div>
+      <div class="contact-form">
+        <div class="form-row">
+          <input type="text" class="form-input" placeholder="Ваше имя" id="contactName">
+          <input type="email" class="form-input" placeholder="Email для ответа" id="contactEmail">
+        </div>
+        <textarea class="form-textarea" placeholder="Ваше сообщение..." id="contactMsg" rows="4"></textarea>
+        <div class="form-footer">
+          <label class="form-checkbox">
+            <input type="checkbox" id="contactConsent">
+            <span>Согласен на обработку персональных данных</span>
+          </label>
+          <button class="send-btn" id="sendContactBtn">Отправить</button>
+        </div>
+      </div>
+    </div>
+    <div class="contact-alt">
+      <div class="contact-method">
+        <div class="cm-icon">📧</div>
+        <div class="cm-info">
+          <div class="cm-label">Email</div>
+          <a href="mailto:contact@artlife.ru" class="cm-value">contact@artlife.ru</a>
+        </div>
+      </div>
+      <div class="contact-method">
+        <div class="cm-icon">📞</div>
+        <div class="cm-info">
+          <div class="cm-label">Телефон</div>
+          <a href="tel:+74951234567" class="cm-value">+7 (495) 123-45-67</a>
+        </div>
+      </div>
+      <div class="contact-method">
+        <div class="cm-icon">💬</div>
+        <div class="cm-info">
+          <div class="cm-label">Telegram</div>
+          <a href="https://t.me/artlife_official" class="cm-value" target="_blank">@artlife_official</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// данные для городов — потом заменим на api
+const CITIES = {
+  moscow: {
+    upcoming: [
+      { img:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&h=600&fit=crop', title:'Маленькая опера', date:'9 апреля 19:00 ЧТ', venue:'Государственный академический Малый театр', price:'от 900', age:'16+' },
+      { img:'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=500&h=600&fit=crop', title:'Спектакль «Имя»', date:'май – июнь', venue:'Театр Эстрады', price:'от 1 500', age:'12+', rating:'5.0', discount:'-20%' },
+      { img:'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=500&h=600&fit=crop', title:'Сцены из супружеской жизни', date:'апрель – май', venue:'Театр Et Cetera', price:'от 4 000', age:'16+' },
+      { img:'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=500&h=600&fit=crop', title:'Ахматова. Гумилёв. Гумилёв', date:'14 мая 19:00 ЧТ', venue:'Театр Эстрады', price:'от 1 200', age:'16+', discount:'-30%' },
+      { img:'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=500&h=600&fit=crop', title:'Saluki', date:'3 апреля 20:00 ПТ', venue:'VK Stadium', price:'от 3 900', age:'16+' }
+    ],
+    best: [
+      { img:'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=600&h=700&fit=crop', title:'Земфира. Бордерлайн тур', date:'15 апреля 20:00', venue:'СК Олимпийский', price:'от 3 500', age:'18+', rating:'4.9' },
+      { img:'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=600&h=700&fit=crop', title:'Каста. 25 лет на сцене', date:'3 мая 20:00', venue:'ВТБ Арена', price:'от 2 800', age:'18+' },
+      { img:'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=700&fit=crop', title:'Летний фестиваль ATLAS', date:'22 апреля 14:00', venue:'Лужники', price:'от 5 000', age:'12+', rating:'4.8', discount:'-15%' },
+      { img:'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=600&h=700&fit=crop', title:'Симфония при свечах', date:'1 июня 19:30', venue:'Крокус Сити Холл', price:'от 1 800', age:'6+' }
+    ],
+    artists: [
+      { name:'Егор Крид', role:'Поп', photo:'https://images.unsplash.com/photo-1618077360395-f3068be8e001?w=400&h=500&fit=crop&crop=face', events: 3 },
+      { name:'Филипп Киркоров', role:'Поп', photo:'https://images.unsplash.com/photo-1583864697784-a0efc8379f70?w=400&h=500&fit=crop&crop=face', events: 5 },
+      { name:'Баста', role:'Хип-хоп', photo:'https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=400&h=500&fit=crop&crop=face', events: 2 },
+      { name:'Земфира', role:'Рок', photo:'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=500&fit=crop&crop=face', events: 4 },
+      { name:'Мот', role:'Хип-хоп', photo:'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=400&h=500&fit=crop&crop=face', events: 2 }
+    ]
+  },
+  spb: {
+    upcoming: [
+      { img:'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=500&h=600&fit=crop', title:'Классика на Неве', date:'12 апреля 19:00 СБ', venue:'БКЗ «Октябрьский»', price:'от 1 200', age:'6+' },
+      { img:'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=500&h=600&fit=crop', title:'Моноспектакль «Письма»', date:'20 апреля 18:00', venue:'Александринский театр', price:'от 800', age:'16+', rating:'4.7' },
+      { img:'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=500&h=600&fit=crop', title:'Ночь музеев Live', date:'18 мая 22:00', venue:'Эрмитажный театр', price:'от 2 500', age:'18+' },
+      { img:'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=500&h=600&fit=crop', title:'Markul', date:'5 апреля 21:00', venue:'A2 Green Concert', price:'от 2 000', age:'18+' }
+    ],
+    best: [
+      { img:'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=600&h=700&fit=crop', title:'Белые ночи фестиваль', date:'21 июня 20:00', venue:'Газпром Арена', price:'от 4 500', age:'16+', rating:'4.9' },
+      { img:'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=600&h=700&fit=crop', title:'Мумий Тролль 30 лет', date:'10 мая 19:00', venue:'Ледовый дворец', price:'от 3 000', age:'16+' },
+      { img:'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=700&fit=crop', title:'Дворцовый бал', date:'28 мая 18:00', venue:'Юсуповский дворец', price:'от 6 000', age:'12+', rating:'5.0' }
+    ],
+    artists: [
+      { name:'Мумий Тролль', role:'Рок', photo:'https://images.unsplash.com/photo-1596075780750-81249df16d19?w=400&h=500&fit=crop&crop=face', events: 3 },
+      { name:'Markul', role:'Хип-хоп', photo:'https://images.unsplash.com/photo-1615109398623-88346a601842?w=400&h=500&fit=crop&crop=face', events: 2 },
+      { name:'Сплин', role:'Рок', photo:'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?w=400&h=500&fit=crop&crop=face', events: 2 },
+      { name:'Тима Белорусских', role:'Поп', photo:'https://images.unsplash.com/photo-1611695434369-a8f5d76ceb7b?w=400&h=500&fit=crop&crop=face', events: 4 }
+    ]
+  },
+  kazan: {
+    upcoming: [
+      { img:'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=500&h=600&fit=crop', title:'Народный концерт', date:'8 апреля 18:00', venue:'Татнефть Арена', price:'от 600', age:'6+' },
+      { img:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&h=600&fit=crop', title:'Элджей', date:'19 апреля 20:00', venue:'Казань Экспо', price:'от 1 800', age:'18+', rating:'4.5' },
+      { img:'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=500&h=600&fit=crop', title:'Фестиваль «Сабантуй»', date:'15 июня 12:00', venue:'Парк Горького', price:'от 500', age:'0+' }
+    ],
+    best: [
+      { img:'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=600&h=700&fit=crop', title:'Jah Khalib', date:'1 мая 21:00', venue:'Татнефть Арена', price:'от 2 500', age:'16+', rating:'4.8' },
+      { img:'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=600&h=700&fit=crop', title:'Татарский балет', date:'25 апреля 19:00', venue:'Театр Камала', price:'от 1 500', age:'6+', rating:'4.9' },
+      { img:'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=600&h=700&fit=crop', title:'Ночь рока', date:'12 мая 22:00', venue:'Пирамида', price:'от 2 000', age:'18+' }
+    ],
+    artists: [
+      { name:'Jah Khalib', role:'Хип-хоп / R&B', photo:'https://images.unsplash.com/photo-1605462863863-10d9e47e15ee?w=400&h=500&fit=crop&crop=face', events: 2 },
+      { name:'Элджей', role:'Хип-хоп', photo:'https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?w=400&h=500&fit=crop&crop=face', events: 2 },
+      { name:'Айдар Галимов', role:'Эстрада', photo:'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=400&h=500&fit=crop&crop=face', events: 4 }
+    ]
+  },
+  sochi: {
+    upcoming: [
+      { img:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=500&h=600&fit=crop', title:'Beach Party Open-Air', date:'1 мая 16:00', venue:'Роза Хутор', price:'от 2 500', age:'18+' },
+      { img:'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=500&h=600&fit=crop', title:'Джазовые вечера', date:'10 апреля 20:00', venue:'Зимний театр', price:'от 1 200', age:'12+', rating:'4.6' },
+      { img:'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=500&h=600&fit=crop', title:'Комеди батл', date:'15 апреля 19:00', venue:'Сочи Парк Арена', price:'от 800', age:'16+' }
+    ],
+    best: [
+      { img:'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=700&fit=crop', title:'Новая Волна 2026', date:'5 июня 19:00', venue:'Зимний театр', price:'от 8 000', age:'12+', rating:'4.9' },
+      { img:'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=700&fit=crop', title:'Sunset Fest', date:'20 июля 17:00', venue:'Имеретинская набережная', price:'от 3 500', age:'18+', rating:'4.7' }
+    ],
+    artists: [
+      { name:'Григорий Лепс', role:'Поп / Рок', photo:'https://images.unsplash.com/photo-1557862921-37829c790f19?w=400&h=500&fit=crop&crop=face', events: 3 },
+      { name:'Ани Лорак', role:'Поп', photo:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=500&fit=crop&crop=face', events: 3 },
+      { name:'Artik & Asti', role:'Поп', photo:'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=500&fit=crop&crop=face', events: 4 }
+    ]
+  },
+  novosibirsk: {
+    upcoming: [
+      { img:'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=500&h=600&fit=crop', title:'Оперный гала-концерт', date:'18 апреля 19:00', venue:'НОВАТиТ', price:'от 1 000', age:'6+', rating:'4.8' },
+      { img:'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=500&h=600&fit=crop', title:'Скриптонит', date:'25 апреля 21:00', venue:'ЛДС «Сибирь»', price:'от 2 200', age:'18+' },
+      { img:'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=500&h=600&fit=crop', title:'Stand-Up вечер', date:'5 мая 19:30', venue:'Клуб «Бродячая собака»', price:'от 700', age:'18+' }
+    ],
+    best: [
+      { img:'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=600&h=700&fit=crop', title:'Сибирский рок-фест', date:'8 июня 14:00', venue:'Парк «Сосновый бор»', price:'от 2 000', age:'16+', rating:'4.7' },
+      { img:'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=600&h=700&fit=crop', title:'Мот live', date:'20 мая 20:00', venue:'ЛДС «Сибирь»', price:'от 1 800', age:'16+' }
+    ],
+    artists: [
+      { name:'Скриптонит', role:'Хип-хоп', photo:'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400&h=500&fit=crop&crop=face', events: 2 },
+      { name:'Дельфин', role:'Электроника', photo:'https://images.unsplash.com/photo-1622253694242-abeb37a33e97?w=400&h=500&fit=crop&crop=face', events: 2 },
+      { name:'Пелагея', role:'Фолк', photo:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=500&fit=crop&crop=face', events: 3 }
+    ]
+  },
+  ekb: {
+    upcoming: [
+      { img:'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=500&h=600&fit=crop', title:'Чайф юбилейный', date:'12 апреля 19:00', venue:'Дивс', price:'от 1 500', age:'16+', rating:'4.9' },
+      { img:'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=500&h=600&fit=crop', title:'Электронная весна', date:'3 мая 22:00', venue:'Tele-Club', price:'от 1 000', age:'18+' },
+      { img:'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=500&h=600&fit=crop', title:'Детский мюзикл', date:'20 апреля 12:00', venue:'ТЮЗ', price:'от 400', age:'0+' },
+      { img:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&h=600&fit=crop', title:'Stand-up «Без фильтра»', date:'28 апреля 19:30', venue:'Космос', price:'от 900', age:'18+' }
+    ],
+    best: [
+      { img:'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=600&h=700&fit=crop', title:'Ural Music Night', date:'28 июня 18:00', venue:'Весь город', price:'от 0', age:'0+', rating:'4.9' },
+      { img:'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=600&h=700&fit=crop', title:'Би-2 тур', date:'15 мая 20:00', venue:'Дивс', price:'от 2 500', age:'16+', rating:'4.8' },
+      { img:'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=600&h=700&fit=crop', title:'Классика в горах', date:'10 июня 17:00', venue:'Ельцин Центр', price:'от 3 000', age:'6+' }
+    ],
+    artists: [
+      { name:'Чайф', role:'Рок', photo:'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=400&h=500&fit=crop&crop=face', events: 3 },
+      { name:'Би-2', role:'Рок', photo:'https://images.unsplash.com/photo-1596075780750-81249df16d19?w=400&h=500&fit=crop&crop=face', events: 2 },
+      { name:'Смысловые Галлюцинации', role:'Рок', photo:'https://images.unsplash.com/photo-1605462863863-10d9e47e15ee?w=400&h=500&fit=crop&crop=face', events: 2 },
+      { name:'Обе Две', role:'Инди', photo:'https://images.unsplash.com/photo-1557555187-23d685287bc3?w=400&h=500&fit=crop&crop=face', events: 3 }
+    ]
+  }
+};
+
+// хелпер — собирает html карточки события
+function cardHTML(ev, big) {
+  let cls = big ? 'ev-card lg' : 'ev-card';
+  let badges = `<span class="badge-age">${ev.age}</span>`;
+  if (ev.rating) badges += `<span class="badge-rating">😊 ${ev.rating}</span>`;
+
+  let priceRow = `<span class="price"><span class="r">₽</span> ${ev.price}</span>`;
+  if (ev.discount) priceRow += `<span class="discount">${ev.discount}</span>`;
+
+  let cityTag = ev._city ? `<div class="city-label">${ev._city}</div>` : '';
+
+  return `<div class="${cls}">
+    <div class="poster">
+      <img src="${ev.img}" alt="">
+      ${badges}
+      <div class="prices">${priceRow}</div>
+    </div>
+    <div class="info">
+      ${cityTag}
+      <div class="title">${ev.title}</div>
+      <div class="date">${ev.date}</div>
+      <div class="venue">${ev.venue}</div>
+    </div>
+  </div>`;
+}
+
+function artistHTML(a) {
+  var evLabel = a.events ? a.events + ' событ.' : '';
+  return `<div class="artist">
+    <img src="${a.photo}" alt="${a.name}">
+    <div class="a-info">
+      <div class="nm">${a.name}</div>
+      <div class="genre">${a.role}</div>
+      ${evLabel ? '<div class="a-events">' + evLabel + '</div>' : ''}
+    </div>
+  </div>`;
+}
+
+// названия городов
+var cityNames = { moscow:'Москва', spb:'Санкт-Петербург', kazan:'Казань', sochi:'Сочи', novosibirsk:'Новосибирск', ekb:'Екатеринбург' };
+
+function reflow(el) {
+  el.classList.remove('fade-in');
+  el.offsetWidth;
+  el.classList.add('fade-in');
+}
+
+function renderBlocks(upcoming, best, artists) {
+  const $up = document.getElementById('upcomingRow');
+  const $best = document.getElementById('bestRow');
+  const $art = document.getElementById('artistsRow');
+
+  $up.innerHTML = upcoming.map(e => cardHTML(e, false)).join('');
+  $best.innerHTML = best.map(e => cardHTML(e, true)).join('');
+  $art.innerHTML = artists.map(a => artistHTML(a)).join('');
+
+  reflow($up);
+  reflow($best);
+  reflow($art);
+}
+
+// загрузка одного города
+function loadCity(key) {
+  const d = CITIES[key];
+  if (!d) return;
+  // без метки города — фильтр активен, город очевиден
+  renderBlocks(d.upcoming, d.best, d.artists);
+}
+
+// все города сразу
+function loadAll() {
+  var allUp = [], allBest = [], allArt = [];
+  var seen = {}; // дедупликация артистов
+  for (var key in CITIES) {
+    var d = CITIES[key];
+    var cn = cityNames[key];
+    // добавляем _city к каждому событию
+    d.upcoming.forEach(function(e) { allUp.push(Object.assign({}, e, {_city: cn})) });
+    d.best.forEach(function(e) { allBest.push(Object.assign({}, e, {_city: cn})) });
+    d.artists.forEach(function(a) {
+      if (!seen[a.name]) { allArt.push(a); seen[a.name] = true }
+    });
+  }
+  // перемешаем чтоб не шли блоками по городу
+  allUp.sort(function() { return .5 - Math.random() });
+  allBest.sort(function() { return .5 - Math.random() });
+  renderBlocks(allUp, allBest, allArt);
+}
+
+// init — показываем все
+var currentCity = null;
+loadAll();
+
+// клик по городу — toggle
+document.getElementById('cityList').addEventListener('click', function(e) {
+  const btn = e.target.closest('.city-btn');
+  if (!btn) return;
+
+  var city = btn.dataset.city;
+
+  if (currentCity === city) {
+    // повторный клик — сбросить фильтр
+    btn.classList.remove('active');
+    currentCity = null;
+    loadAll();
+  } else {
+    this.querySelectorAll('.city-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCity = city;
+    loadCity(city);
+  }
+});
+
+
+// рейтинг (был скролл к отзывам, но блок убрали)
+// document.getElementById('ratingBadge').addEventListener('click', () => {
+//   document.getElementById('sec-reviews').scrollIntoView({ behavior: 'smooth' });
+// });
+
+
+// === подписка ===
+const $followBtn = document.getElementById('followBtn');
+const $modal = document.getElementById('subModal');
+let subscribed = false;
+
+$followBtn.onclick = function() {
+  if (subscribed) {
+    // отписка
+    subscribed = false;
+    this.textContent = 'Подписаться';
+    this.classList.remove('subscribed');
+    document.getElementById('followHint').style.display = '';
+    setFollowersText(12840);
+  } else {
+    $modal.classList.add('active');
+  }
+};
+
+document.getElementById('modalConfirm').onclick = function() {
+  subscribed = true;
+  $followBtn.textContent = '✓ Вы подписаны';
+  $followBtn.classList.add('subscribed');
+  document.getElementById('followHint').style.display = 'none';
+  setFollowersText(12841);
+  hideModal();
+};
+
+document.getElementById('modalClose').onclick = hideModal;
+document.getElementById('modalSkip').onclick = hideModal;
+
+// закрытие по клику на оверлей
+$modal.onclick = e => { if (e.target === $modal) hideModal() };
+
+function hideModal() { $modal.classList.remove('active') }
+
+function setFollowersText(n) {
+  document.querySelector('#followerCount .txt').textContent =
+    n.toLocaleString('ru-RU') + ' следят за организатором';
+}
+
+
+// === команда ===
+const teamInfo = [
+  { img:'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=680&h=560&fit=crop', quote:'Мы создаём не просто концерты — мы создаём воспоминания. Каждое мероприятие для нас это возможность подарить людям эмоции, которые они запомнят на всю жизнь.', name:'Андрей Матвеев', role:'основатель Артлайф' },
+  { img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=680&h=560&fit=crop', quote:'За каждым большим шоу стоят месяцы подготовки. Мне нравится этот процесс — от первого звонка артисту до момента, когда зал взрывается аплодисментами.', name:'Елена Козлова', role:'продюсер' },
+  { img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=680&h=560&fit=crop', quote:'Каждая площадка уникальна, и наша задача — сделать так, чтобы артист и зал звучали в унисон. Свет, звук, сценография — все должно работать на одну историю.', name:'Дмитрий Волков', role:'арт-директор' },
+  { img:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=680&h=560&fit=crop', quote:'Мне важно, чтобы о наших событиях говорили. Не потому что мы потратили бюджет на рекламу, а потому что людям правда понравилось.', name:'Ольга Смирнова', role:'PR-директор' }
+];
+
+let openIdx = -1;
+const $detail = document.getElementById('teamDetail');
+
+function closeTeamCard() {
+  $detail.classList.remove('open');
+  document.querySelectorAll('.team .person').forEach(p => p.classList.remove('active'));
+  openIdx = -1;
+}
+
+// делегируем на контейнер
+document.getElementById('teamCircles').addEventListener('click', function(e) {
+  const person = e.target.closest('.person');
+  if (!person) return;
+
+  const i = +person.dataset.i;
+
+  if (openIdx === i) {
+    closeTeamCard();
+    return;
+  }
+
+  // убираем active со всех
+  this.querySelectorAll('.person').forEach(p => p.classList.remove('active'));
+  person.classList.add('active');
+  openIdx = i;
+
+  const info = teamInfo[i];
+  document.getElementById('tdImg').src = info.img;
+  document.getElementById('tdQuote').textContent = info.quote;
+  document.getElementById('tdName').textContent = info.name;
+  document.getElementById('tdRole').textContent = info.role;
+  $detail.classList.add('open');
+});
+
+document.getElementById('tdClose').onclick = closeTeamCard;
+
+// туры — раскрытие
+// туры (хардкод пока)
+var tours = [
+  {
+    name: 'Земфира. Бордерлайн тур',
+    sub: 'dates & tickets',
+    photos: [
+      'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=500&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=500&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=500&h=400&fit=crop'
+    ],
+    dates: [
+      { day:'15', mon:'апр', city:'Москва', place:'СК Олимпийский' },
+      { day:'18', mon:'апр', city:'Санкт-Петербург', place:'Ледовый дворец' },
+      { day:'22', mon:'апр', city:'Казань', place:'Татнефть Арена' },
+      { day:'25', mon:'апр', city:'Екатеринбург', place:'Дивс' }
+    ]
+  },
+  {
+    name: 'Каста. 25 лет на сцене',
+    sub: 'юбилейный тур',
+    photos: [
+      'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=500&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=500&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=500&h=400&fit=crop'
+    ],
+    dates: [
+      { day:'3', mon:'мая', city:'Москва', place:'ВТБ Арена' },
+      { day:'6', mon:'мая', city:'Санкт-Петербург', place:'A2 Green Concert' },
+      { day:'10', mon:'мая', city:'Новосибирск', place:'ЛДС «Сибирь»' },
+      { day:'15', mon:'мая', city:'Сочи', place:'Зимний театр' },
+      { day:'19', mon:'мая', city:'Екатеринбург', place:'Дивс' }
+    ]
+  },
+  {
+    name: 'Мот. Новый альбом',
+    sub: 'летний тур 2026',
+    photos: [
+      'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=500&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=500&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&h=400&fit=crop'
+    ],
+    dates: [
+      { day:'8', mon:'июн', city:'Москва', place:'VK Stadium' },
+      { day:'12', mon:'июн', city:'Казань', place:'Казань Экспо' },
+      { day:'18', mon:'июн', city:'Сочи', place:'Роза Хутор' }
+    ]
+  },
+  {
+    name: 'Симфония при свечах',
+    sub: 'классика',
+    photos: [
+      'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=500&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=500&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=500&h=400&fit=crop'
+    ],
+    dates: [
+      { day:'1', mon:'июн', city:'Москва', place:'Крокус Сити Холл' },
+      { day:'5', mon:'июн', city:'Санкт-Петербург', place:'БКЗ «Октябрьский»' },
+      { day:'10', mon:'июн', city:'Екатеринбург', place:'Ельцин Центр' }
+    ]
+  }
+];
+
+var openTour = -1;
+document.getElementById('toursRow').onclick = function(e) {
+  var card = e.target.closest('.tour-card');
+  if (!card) return;
+  var i = +card.dataset.tour;
+  var panel = document.getElementById('tourDetail');
+
+  if (openTour === i) { closeTour(); return }
+  openTour = i;
+
+  var t = tours[i];
+  document.getElementById('tdPhoto').innerHTML = '<img src="' + t.photos[0] + '">';
+  document.getElementById('tdTitle').textContent = t.name;
+  document.getElementById('tdSub').textContent = t.sub;
+
+  var html = '';
+  for (var j = 0; j < t.dates.length; j++) {
+    var d = t.dates[j];
+    html += '<li><div class="d-num"><b>'+d.day+'</b><small>'+d.mon+'</small></div>';
+    html += '<div class="d-info"><div class="city">'+d.city+'</div><div class="place">'+d.place+'</div></div>';
+    html += '<button class="buy-btn">Билеты</button></li>';
+  }
+  document.getElementById('tdDates').innerHTML = html;
+  panel.classList.add('open');
+  // чтоб было видно
+  setTimeout(function() { panel.scrollIntoView({behavior: 'smooth' }); }, 100);
+};
+
+function closeTour() {
+  document.getElementById('tourDetail').classList.remove('open');
+  openTour = -1;
+}
+
+document.getElementById('tdX').onclick = closeTour;
+
+// переключение вкладок формы обратной связи
+document.getElementById('topicTabs').addEventListener('click', function(e) {
+  var btn = e.target.closest('.topic-btn');
+  if (!btn) return;
+  
+  this.querySelectorAll('.topic-btn').forEach(function(b) {
+    b.classList.remove('active');
+  });
+  btn.classList.add('active');
+});
+
+// отправка формы обратной связи
+document.getElementById('sendContactBtn').onclick = function() {
+  var name = document.getElementById('contactName').value.trim();
+  var email = document.getElementById('contactEmail').value.trim();
+  var msg = document.getElementById('contactMsg').value.trim();
+  var consent = document.getElementById('contactConsent').checked;
+  
+  if (!name || !email || !msg) {
+    alert('Пожалуйста, заполните все поля');
+    return;
+  }
+  if (!consent) {
+    alert('Необходимо согласие на обработку данных');
+    return;
+  }
+  
+  // имитация отправки
+  this.textContent = 'Отправляем...';
+  this.disabled = true;
+  
+  var btn = this;
+  setTimeout(function() {
+    btn.textContent = '✓ Отправлено!';
+    btn.style.background = '#4CAF50';
+    
+    // очистка формы
+    document.getElementById('contactName').value = '';
+    document.getElementById('contactEmail').value = '';
+    document.getElementById('contactMsg').value = '';
+    document.getElementById('contactConsent').checked = false;
+    
+    setTimeout(function() {
+      btn.textContent = 'Отправить';
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 3000);
+  }, 1200);
+};
+</script>
+</body>
+</html>
